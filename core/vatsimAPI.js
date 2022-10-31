@@ -2,6 +2,7 @@ const Firboundary = require('./firboundary.js')
 const pointInPoly = require('geo-point-in-polygon')
 const VatsimData = require('./vatsim-data.js')
 const TransData = require('./transceivers-data.js')
+const Airlines = require('../data/airlines.json')
 
 module.exports = class vatsimAPI {
   constructor() {
@@ -43,6 +44,15 @@ module.exports = class vatsimAPI {
       })
 
       pilot.transceivers = pTrans.transceivers
+
+      const callsignDec = Airlines.find(aline => {
+        const pCall = pilot.callsign.slice(0, 3)
+        return aline.icao == pCall
+      })
+
+      const pCalldec = pilot.callsign
+      pilot.callsign_decoded = callsignDec?.callsign || pCalldec
+
       pilotsExtended.push(pilot)
     })
 
