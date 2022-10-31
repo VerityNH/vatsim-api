@@ -1,0 +1,14 @@
+.pilots-within-fir_row {
+    width: 300px;
+    border: 1px solid #231414
+}
+
+.pilots-within-fir_row .label {
+    font-weight: bold;
+    display: inline-block;
+}
+
+.pilots-within-fir_row .value {
+    display: inline-block;
+    padding-left: 10px;
+}
