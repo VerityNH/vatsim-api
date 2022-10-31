@@ -39,7 +39,7 @@ module.exports = class vatsimAPI {
 
     pilots.forEach(pilot => {
       const pTrans = tData.find(trans => {
-        return pilot.callsign = trans.callsign
+        return pilot.callsign == trans.callsign
       })
 
       pilot.transceivers = pTrans.transceivers
