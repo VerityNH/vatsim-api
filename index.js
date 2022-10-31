@@ -14,7 +14,7 @@ const port = 3001
 
 //
 // app.use('/index', express.static( 'dist'))
-//
+
 // app.get('/vatsim-data', asyncHandler( async (req, res) => {
 //   const url = 'https://data.vatsim.net/v3/vatsim-data.json'
 //   const response = await fetch(url)
@@ -58,6 +58,13 @@ app.get('/api/pilotsInFirExtended/:icao', asyncHandler( async(req, res) => {
   const fir = req.params.icao.replace(/[^a-zA-Z0-9 ]/g, '')
   const firPilots = await api.getPilotsInFirExtended(fir)
   res.send(firPilots)
+}))
+
+app.get('/api/pilotsInFirExtended/HTML/:icao', asyncHandler( async(req, res) => {
+  const fir = req.params.icao.replace(/[^a-zA-Z0-9 ]/g, '')
+  const firPilots = await api.getPilotsWithinFirHtml(fir)
+  res.writeHead(200, {'Content-Type': 'text/html'})
+  res.end(firPilots)
 }))
 
 app.get('/api/getAllControllers', asyncHandler( async(req, res) => {
