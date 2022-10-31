@@ -44,7 +44,7 @@ module.exports = class vatsimAPI {
         return pilot.callsign == trans.callsign
       })
 
-      pilot.transceivers = pTrans.transceivers
+      pilot.transceivers = pTrans?.transceivers
 
       const callsignDec = Airlines.find(aline => {
         const pCall = pilot.callsign.slice(0, 3)
@@ -54,8 +54,10 @@ module.exports = class vatsimAPI {
       const pCalldec = pilot.callsign
       pilot.callsign_decoded = callsignDec?.callsign || pCalldec
 
-      const freq = pilot.transceivers[0].frequency * 0.000001
-      pilot.monitored_freq = freq.toFixed(3)
+      if (pilot.transceivers && pilot.transceivers.length) {
+        const freq = pilot.transceivers[0].frequency * 0.000001
+        pilot.monitored_freq = freq.toFixed(3)
+      }
 
       // if ( null != pilot.flight_plan) {
       //   const aircraftDec = Aircrafts.find(craft => {
@@ -112,7 +114,7 @@ module.exports = class vatsimAPI {
               <div class="pilots-within-fir_decoded_callsign"><div class="label">Decoded Callsign:</div><div class="value">${pilot.callsign_decoded}</div></div>
               <div class="pilots-within-fir_aircraft"><div class="label">Aircraft:</div><div class="value">${pilot?.flight_plan?.aircraft_faa}</div></div>
               <div class="pilots-within-fir_name"><div class="label">Name:</div><div class="value">${pilot.name}</div></div>
-              <div class="pilots-within-fir_frequency"><div class="label">Monitored Freq:</div><div class="value">${pilot.monitored_freq}</div></div>
+              <div class="pilots-within-fir_frequency"><div class="label">Monitored Freq:</div><div class="value">${pilot?.monitored_freq}</div></div>
               <div class="pilots-within-fir_altitude"><div class="label">Altitude:</div><div class="value">${pilot.altitude}</div></div>
               <div class="pilots-within-fir_groundspeed"><div class="label">Ground speed:</div><div class="value">${pilot.groundspeed}</div></div>
               <div class="pilots-within-fir_transponder"><div class="label">Transponder:</div><div class="value">${pilot.transponder}</div></div>
