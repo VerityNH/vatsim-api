@@ -60,6 +60,11 @@ app.get('/api/pilotsInFirExtended/:icao', asyncHandler( async(req, res) => {
   res.send(firPilots)
 }))
 
+app.get('/api/getAllControllers', asyncHandler( async(req, res) => {
+  const controllers = await api.getAllControllers()
+  res.send(controllers)
+}))
+
 
 app.listen(port, () => {
   console.log(`App started at port ${port}`)

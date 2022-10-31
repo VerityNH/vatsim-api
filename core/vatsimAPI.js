@@ -48,4 +48,9 @@ module.exports = class vatsimAPI {
 
     return pilotsExtended
   }
+
+  async getAllControllers() {
+    const data = this.vatData.getAllControllers()
+    return data
+  }
 }

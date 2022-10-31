@@ -15,4 +15,17 @@ module.exports = class VatsimData {
 
     return data.pilots
   }
+
+  async getAllControllers() {
+    const data = await this.preload()
+
+    const filterRating = [-1, 0, 11, 12]
+    const filterFacility = [0]
+
+    const ret = data.controllers.filter( controller => {
+      return !filterRating.includes(controller.rating) && !filterFacility.includes(controller.facility)
+    } )
+
+    return ret
+  }
 }
