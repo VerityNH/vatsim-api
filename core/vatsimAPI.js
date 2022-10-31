@@ -3,6 +3,7 @@ const pointInPoly = require('geo-point-in-polygon')
 const VatsimData = require('./vatsim-data.js')
 const TransData = require('./transceivers-data.js')
 const Airlines = require('../data/airlines.json')
+const Aircrafts = require('../data/aircrafts.json')
 
 module.exports = class vatsimAPI {
   constructor() {
@@ -53,6 +54,20 @@ module.exports = class vatsimAPI {
       const pCalldec = pilot.callsign
       pilot.callsign_decoded = callsignDec?.callsign || pCalldec
 
+      const freq = pilot.transceivers[0].frequency * 0.000001
+      pilot.monitored_freq = freq.toFixed(3)
+
+      // if ( null != pilot.flight_plan) {
+      //   const aircraftDec = Aircrafts.find(craft => {
+      //     return craft.icao == pilot?.flight_plan?.aircraft_short
+      //   })
+      //
+      //   pilot.aircraft = {
+      //     aircraft_short: pilot?.flight_plan?.aircraft_short,
+      //     decoded: aircraftDec?.name || null
+      //   }
+      // }
+
       pilotsExtended.push(pilot)
     })
 
@@ -95,10 +110,15 @@ module.exports = class vatsimAPI {
           <div class="pilots-within-fir_row">
               <div class="pilots-within-fir_callsign"><div class="label">Callsign:</div><div class="value">${pilot.callsign}</div></div>
               <div class="pilots-within-fir_decoded_callsign"><div class="label">Decoded Callsign:</div><div class="value">${pilot.callsign_decoded}</div></div>
+              <div class="pilots-within-fir_aircraft"><div class="label">Aircraft:</div><div class="value">${pilot?.flight_plan?.aircraft_faa}</div></div>
               <div class="pilots-within-fir_name"><div class="label">Name:</div><div class="value">${pilot.name}</div></div>
+              <div class="pilots-within-fir_frequency"><div class="label">Monitored Freq:</div><div class="value">${pilot.monitored_freq}</div></div>
               <div class="pilots-within-fir_altitude"><div class="label">Altitude:</div><div class="value">${pilot.altitude}</div></div>
               <div class="pilots-within-fir_groundspeed"><div class="label">Ground speed:</div><div class="value">${pilot.groundspeed}</div></div>
               <div class="pilots-within-fir_transponder"><div class="label">Transponder:</div><div class="value">${pilot.transponder}</div></div>
+              <div class="pilots-within-fir_departure"><div class="label">Departure:</div><div class="value">${pilot?.flight_plan?.departure}</div></div>
+              <div class="pilots-within-fir_arrival"><div class="label">Arrival:</div><div class="value">${pilot?.flight_plan?.arrival}</div></div>
+              <div class="pilots-within-fir_route"><div class="label">Route:</div><div class="value">${pilot?.flight_plan?.route}</div></div>
           </div>
         `
       }).join("")}
