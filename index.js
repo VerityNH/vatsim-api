@@ -67,6 +67,16 @@ app.get('/api/pilotsInFirExtended/HTML/:icao', asyncHandler( async(req, res) => 
   res.end(firPilots)
 }))
 
+app.get('/api/pilotsInFirExtended/HTML/map/:icao/w/:width/h/:height/zoom/:zoom', asyncHandler( async(req, res) => {
+  const fir = req.params.icao.replace(/[^a-zA-Z0-9 ]/g, '')
+  const width = req.params.width.replace(/[^a-zA-Z0-9 ]/g, '')
+  const height = req.params.height.replace(/[^a-zA-Z0-9 ]/g, '')
+  const zoom = req.params.zoom.replace(/[^a-zA-Z0-9 ]/g, '')
+  const firPilots = await api.getPilotsWithinFirMap(fir, width, height, zoom)
+  res.writeHead(200, {'Content-Type': 'text/html'})
+  res.end(firPilots)
+}))
+
 app.get('/api/getAllControllers', asyncHandler( async(req, res) => {
   const controllers = await api.getAllControllers()
   res.send(controllers)
