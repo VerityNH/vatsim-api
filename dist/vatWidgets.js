@@ -1,17 +1,28 @@
+const VT_PILOTS_IN_FIR_DIV_ID = "pilotsWidget"
+const VT_PILOTS_IN_FIR_FETCH_URL = "https://cors.eu.org/https://vatapi.veritynh.dev/api/pilotsInFirExtended"
+
 class PilotsWithinFIR {
   constructor(fir) {
     this.fir = fir
-    this.mainDivId = "pilotsWidget"
+    this.mainDivId = VT_PILOTS_IN_FIR_DIV_ID
+    this.url = VT_PILOTS_IN_FIR_FETCH_URL
     this.widgetDiv = undefined
     this.init()
   }
 
   init() {
     this.widgetDiv = document.getElementById(this.mainDivId)
+
+    let link = document.createElement('link');
+    link.type = 'text/css';
+    link.rel = 'stylesheet';
+
+    document.head.appendChild(link)
+    link.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
   }
 
   async fetchData() {
-    const req = await fetch(`/api/pilotsInFirExtended/${this.fir}`)
+    const req = await fetch(`${this.url}/${this.fir}`)
     const data = await req.json()
     return data
   }
@@ -94,7 +105,7 @@ class PilotsWithinFIR {
 
     let html = `
         <div class="vat-pilotsWidget-mainContainer">
-          <div class="vat-pilotsWidget-title">Aircraft within ZJX Airspace</div>
+          <div class="vat-pilotsWidget-title">Aircraft within ZJX Airspace <button class="vat-pilotsWidget-refresh"><i class="fa fa-refresh"></i></button></div>
           <div class="vat-pilotsWidget-table">
             <div class="vat-pilotsWidget-header">
                 <div class="vat-pilotsWidget-hcell callsign">Callsign</div>
@@ -108,6 +119,11 @@ class PilotsWithinFIR {
       `
 
     container.innerHTML = html
+
+    // Apply refresh handlers
+    document.querySelector(".vat-pilotsWidget-refresh").addEventListener('click', () => {
+      this.render()
+    }, false)
 
     // Apply tooltip handlers
     if (data.length) {

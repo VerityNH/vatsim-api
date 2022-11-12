@@ -29,6 +29,16 @@
     border-width: 0;
 }
 
+.vat-pilotsWidget-refresh {
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    padding: 12px 16px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #3c404b;
+}
+
 .vat-pilotsWidget-hcell {
     float: left; /* fix for  buggy browsers */
     display: table-cell;
