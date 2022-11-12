@@ -39,6 +39,7 @@ const port = 3001
 //   res.send(data)
 // }))
 
+app.use('/widgets', express.static( 'dist'))
 
 // API
 
