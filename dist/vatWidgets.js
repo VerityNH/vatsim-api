@@ -41,7 +41,7 @@ class PilotsWithinFIR {
       const element = document.getElementById(searchId)
 
       if (element) {
-        element.style.visibility = "visible"
+        element.style.display = "block"
       }
     }
 
@@ -51,7 +51,7 @@ class PilotsWithinFIR {
       const element = document.getElementById(searchId)
 
       if (element) {
-        element.style.visibility = "hidden"
+        element.style.display = "none"
       }
     }
 

@@ -33,7 +33,6 @@
     display: inline-block;
     cursor: pointer;
     border: none;
-    padding: 12px 16px;
     font-size: 16px;
     color: #fff;
     background-color: #3c404b;
@@ -97,9 +96,9 @@
 /* Tooltips */
 
 .vat-pilotsWidget-tooltip-text {
-    visibility: hidden;
+    display: none;
     position: absolute;
-    z-index: 2;
+    z-index: 9999;
     width: 200px;
     color: white;
     font-size: 12px;
