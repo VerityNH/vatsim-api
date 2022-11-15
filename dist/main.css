@@ -1,6 +1,6 @@
 .vat-pilotsWidget-mainContainer {
     display: block;
-    width: 330px;
+    width: 366px;
 }
 
 .vat-pilotsWidget-table {
@@ -36,6 +36,7 @@
     font-size: 16px;
     color: #fff;
     background-color: #3c404b;
+    margin-left: 30px
 }
 
 .vat-pilotsWidget-hcell {
@@ -43,7 +44,7 @@
     display: table-cell;
     background-color: #3c404b;
     color: #fff;
-    width: 80px;
+    width: 90px;
     margin: 0;
     padding: 0;
     border-width: 0;
@@ -84,7 +85,7 @@
     float: left; /* fix for  buggy browsers */
     display: table-cell;
     background-color: #ccc;
-    width: 80px;
+    width: 90px;
     margin: 0;
     padding: 0;
     border-width: 0;
@@ -99,7 +100,7 @@
     display: none;
     position: absolute;
     z-index: 9999;
-    width: 200px;
+    width: 350px;
     color: white;
     font-size: 12px;
     background-color: #192733;
@@ -141,6 +142,6 @@
     margin: 0;
     padding: 0;
     border-width: 0;
-    width: 115px;
+    width: 235px;
     overflow-wrap: break-word;
 }
