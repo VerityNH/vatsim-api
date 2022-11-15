@@ -4,6 +4,7 @@ const VatsimData = require('./vatsim-data.js')
 const TransData = require('./transceivers-data.js')
 const Airlines = require('../data/airlines.json')
 const Aircrafts = require('../data/aircrafts.json')
+const Airports = require('../data/airports.json')
 const polygonCenter = require('geojson-polygon-center')
 
 module.exports = class vatsimAPI {
@@ -73,21 +74,23 @@ module.exports = class vatsimAPI {
       const pCalldec = pilot.callsign
       pilot.callsign_decoded = callsignDec?.callsign || pCalldec
 
+      if (pilot?.flight_plan?.departure && pilot?.flight_plan?.arrival) {
+        const depAirportDecoded = Airports.find(dPort => {
+          return dPort.icao == pilot?.flight_plan?.departure
+        })
+
+        const arrAirportDecoded = Airports.find(dPort => {
+          return dPort.icao == pilot?.flight_plan?.arrival
+        })
+
+        pilot.dep_decoded = depAirportDecoded?.name || null
+        pilot.arr_decoded = arrAirportDecoded?.name || null
+      }
+
       if (pilot.transceivers && pilot.transceivers.length) {
         const freq = pilot.transceivers[0].frequency * 0.000001
         pilot.monitored_freq = freq.toFixed(3)
       }
-
-      // if ( null != pilot.flight_plan) {
-      //   const aircraftDec = Aircrafts.find(craft => {
-      //     return craft.icao == pilot?.flight_plan?.aircraft_short
-      //   })
-      //
-      //   pilot.aircraft = {
-      //     aircraft_short: pilot?.flight_plan?.aircraft_short,
-      //     decoded: aircraftDec?.name || null
-      //   }
-      // }
 
       pilotsExtended.push(pilot)
     })

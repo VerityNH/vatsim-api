@@ -70,6 +70,14 @@ class PilotsWithinFIR {
                     <div class="vat-tip-cell vat-tip-text">${rec.callsign_decoded}</div>
                 </div>
                 <div class="vat-pilotsWidget-tooltip-row">
+                    <div class="vat-tip-cell vat-tip-label">Departure:</div>
+                    <div class="vat-tip-cell vat-tip-text">${rec.dep_decoded}</div>
+                </div>
+                <div class="vat-pilotsWidget-tooltip-row">
+                    <div class="vat-tip-cell vat-tip-label">Arrival:</div>
+                    <div class="vat-tip-cell vat-tip-text">${rec.arr_decoded}</div>
+                </div>
+                <div class="vat-pilotsWidget-tooltip-row">
                     <div class="vat-tip-cell vat-tip-label">Name:</div>
                     <div class="vat-tip-cell vat-tip-text">${rec.name}</div>
                 </div>
