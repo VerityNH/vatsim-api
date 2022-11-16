@@ -27,16 +27,37 @@
     justify-content: center;
     background-color: #3c404b;
     border-width: 0;
+    position: relative;
 }
 
-.vat-pilotsWidget-refresh {
+.vat-pilotsWidget-menuBtns {
+    margin: 0;
+    padding: 0;
+    border: none;
+    position: absolute;
+    left: 78%;
+}
+
+.vat-pilotsWidget-btnRefresh {
     display: inline-block;
     cursor: pointer;
     border: none;
     font-size: 16px;
     color: #fff;
     background-color: #3c404b;
-    margin-left: 30px
+    margin-left: 30px;
+    padding: 0;
+}
+
+.vat-pilotsWidget-btnMap {
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    color: #fff;
+    background-color: #3c404b;
+    padding: 0;
+    margin-left: 5px;
 }
 
 .vat-pilotsWidget-hcell {
@@ -106,18 +127,18 @@
     background-color: #192733;
     border-radius: 10px;
     padding: 10px 15px 10px 15px;
-    top: -8px;
+    top: -11px;
     left: 120%;
 }
 
-.tooltip-text::before {
+.vat-pilotsWidget-tooltip-text::before {
     content: "";
     position: absolute;
     transform: rotate(45deg);
     background-color: #192733;
     padding: 5px;
     z-index: 1;
-    top: 35%;
+    top: 5%;
     left: -2%;
 }
 
@@ -145,3 +166,34 @@
     width: 235px;
     overflow-wrap: break-word;
 }
+
+.vat-pilotsWidget-mapContainer {
+    width: 100%;
+    height: 100%;
+    /*display: flex;*/
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(197, 197, 197, 0.5);
+    display: none;
+}
+
+.vat-pilotsWidget-mapBody .close {
+    cursor: pointer;
+    left: 95%;
+    top: 29px;
+    position: absolute;
+}
+
+.vat-pilotsWidget-mapContainer .vat-pilotsWidget-mapBody svg {
+}
+
+/*#vat-pilotsWidget-mapCanvas {*/
+/*    border : 2px solid black;*/
+/*    width: 800px;*/
+/*    height: 400px;*/
+/*}*/
+
+/*#vat-pilotsWidget-mapCanvas .map path {*/
+/*    fill: #ddd;*/
+/*    stroke: #aaa;*/
+/*}*/

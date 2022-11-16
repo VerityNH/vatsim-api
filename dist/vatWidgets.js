@@ -1,5 +1,5 @@
 const VT_PILOTS_IN_FIR_DIV_ID = "pilotsWidget"
-const VT_PILOTS_IN_FIR_FETCH_URL = "https://cors.eu.org/https://vatapi.veritynh.dev/api/pilotsInFirExtended"
+const VT_PILOTS_IN_FIR_FETCH_URL = "https://cors.eu.org/https://vatapi.veritynh.dev/api"
 
 class PilotsWithinFIR {
   constructor(fir) {
@@ -13,16 +13,26 @@ class PilotsWithinFIR {
   init() {
     this.widgetDiv = document.getElementById(this.mainDivId)
 
-    let link = document.createElement('link');
-    link.type = 'text/css';
-    link.rel = 'stylesheet';
+    let link = document.createElement('link')
+    link.type = 'text/css'
+    link.rel = 'stylesheet'
 
     document.head.appendChild(link)
     link.href = "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+
+    let d3script = document.createElement('script')
+    d3script.src = 'https://cdn.jsdelivr.net/npm/d3@7'
+    document.head.appendChild(d3script)
   }
 
   async fetchData() {
-    const req = await fetch(`${this.url}/${this.fir}`)
+    const req = await fetch(`${this.url}/pilotsInFirExtended/${this.fir}`)
+    const data = await req.json()
+    return data
+  }
+
+  async fetchFir() {
+    const req = await fetch(`${this.url}/firboundary/${this.fir}`)
     const data = await req.json()
     return data
   }
@@ -117,7 +127,12 @@ class PilotsWithinFIR {
 
     let html = `
         <div class="vat-pilotsWidget-mainContainer">
-          <div class="vat-pilotsWidget-title">Aircraft within ZJX Airspace <button class="vat-pilotsWidget-refresh"><i class="fa fa-refresh"></i></button></div>
+          <div class="vat-pilotsWidget-title">Aircraft within ZJX Airspace
+            <div class="vat-pilotsWidget-menuBtns"> 
+                <button class="vat-pilotsWidget-btnRefresh"><i class="fa fa-refresh"></i></button>
+                <button class="vat-pilotsWidget-btnMap"><i class="fa fa-map"></i></button>
+            </div>
+          </div>
           <div class="vat-pilotsWidget-table">
             <div class="vat-pilotsWidget-header">
                 <div class="vat-pilotsWidget-hcell callsign">Callsign</div>
@@ -127,13 +142,75 @@ class PilotsWithinFIR {
             </div>
             ${innerHTML}
           </div>
+          <div class="vat-pilotsWidget-mapContainer modal">
+            <div id="vat-pilotsWidget-mapContainer" class="vat-pilotsWidget-mapBody">
+                <div class="close">[x] Close</div>
+            </div>
+          </div>
         </div>
       `
 
     container.innerHTML = html
 
+    //Draw Fir
+    const drawFir = async () => {
+      const firCoordinates = await this.fetchFir()
+
+      const geojson = {
+        type: "FeatureCollection",
+        features: [firCoordinates]
+      }
+
+      let width = window.innerWidth / 2
+      let height = window.innerHeight / 2
+
+      let projection = d3.geoEquirectangular()
+      projection.fitSize([width, height], geojson)
+      let geoGenerator = d3.geoPath().projection(projection)
+
+      let svg = d3.select("#vat-pilotsWidget-mapContainer").append('svg').style('width', width).style('height', height)
+
+      svg.append('g').selectAll('path')
+        .data(geojson.features)
+        .join('path')
+        .attr('d', geoGenerator)
+        .attr('fill', '#088')
+        .attr('stroke', '#000')
+
+      let planes = data.map(pilot => {
+        return {long: pilot.longitude, lat: pilot.latitude, heading: pilot.heading, callsign: pilot.callsign}
+      })
+
+      svg.selectAll(".mark")
+        .data(planes)
+        .enter()
+        .append("svg:image")
+        .attr('class','mark')
+        .attr('width', 20)
+        .attr('height', 20)
+        .attr('xlink:href', "./img/plane.png")
+        .attr("transform", d => { return `translate(${projection([d.long,d.lat])}) rotate(${d.heading})` } )
+        .append("svg:title").text( d => { return `${d.callsign}` } )
+    }
+
+    // Apply map handlers
+    const showMap = async () => {
+      await drawFir()
+      document.querySelector('.vat-pilotsWidget-mapContainer').style.display = 'flex'
+      document.querySelector('.vat-pilotsWidget-mapBody .close').addEventListener('click', hideMap, false)
+    }
+
+    const hideMap = () => {
+      document.querySelector('.vat-pilotsWidget-mapContainer').style.display = 'none'
+      document.querySelector('.vat-pilotsWidget-mapBody .close').removeEventListener('click', hideMap)
+      document.querySelector('.vat-pilotsWidget-mapContainer svg').remove()
+    }
+
+    document.querySelector(".vat-pilotsWidget-btnMap").addEventListener('click', showMap, false)
+
+
     // Apply refresh handlers
-    document.querySelector(".vat-pilotsWidget-refresh").addEventListener('click', () => {
+    document.querySelector(".vat-pilotsWidget-btnRefresh").addEventListener('click', () => {
       this.render()
     }, false)
 
